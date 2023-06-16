@@ -45,7 +45,7 @@ function App() {
           Gerar QR Code
         </button>
         {
-          qrCode && <img src={qrCode} alt="QR Code" />
+          qrCode && (<img src={qrCode} alt="QR Code" />)
         }
       </main>
       <footer>
