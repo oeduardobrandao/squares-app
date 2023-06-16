@@ -86,6 +86,7 @@ footer {
 
 footer a {
   color: white;
+  font-family: 'Rubik';
   font-weight: 600;
   text-decoration: none;
   transition: 0.3s;
