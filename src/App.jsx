@@ -1,35 +1,60 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+import { useState } from 'react';
+import QRCode from 'qrcode';
+import Swal from 'sweetalert2';
+import withReactContent from 'sweetalert2-react-content'  
 import './App.css'
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [inputText, setInputText] = useState('');
+  const [qrCode, setQRCode] = useState('');
+  const MySwal = withReactContent(Swal);
+
+  const gerarQRCode = () => {
+    if (inputText === '') {
+      MySwal.fire(
+        'Digite um texto válido',
+        'Insira um texto no campo em destaque para gerar o QR code.',
+        'error'
+      );
+      return;
+    }
+
+    QRCode.toDataURL(inputText, { version: 8 }, (err, url) => {
+      if (err) {
+        console.error(err);
+        return;
+      }
+      setQRCode(url);
+      setInputText('');
+    });
+  };
 
   return (
     <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
+      <header>
+        <h1>S<span>Q</span>UA<span>R</span>ES</h1>
+      </header>
+      <main>
+        <input
+          type="text"
+          value={inputText}
+          onChange={(e) => setInputText(e.target.value)}
+          placeholder="Digite aqui o link"
+          />
+        <button onClick={gerarQRCode}>
+          Gerar QR Code
         </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+        {
+          qrCode && <img src={qrCode} alt="QR Code" />
+        }
+      </main>
+      <footer>
+      <a href="https://github.com/oeduardobrandao">
+        <p>©2023 Eduardo Brandão</p>
+      </a>
+    </footer>
     </>
-  )
+  );
 }
 
-export default App
+export default App;
